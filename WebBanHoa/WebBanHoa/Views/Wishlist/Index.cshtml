@@ -1,0 +1,129 @@
+﻿@model PagedList.PagedList<WebBanHoa.Models.EF.Wishlist>
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<!-- Slider -->
+<style>
+    .news_section_container {
+        margin-top: 180px;
+    }
+
+    .row-item-new {
+        margin-bottom: 20px;
+    }
+
+    .title-news {
+        font-size: 24px;
+        border-bottom: 1px solid;
+        padding: 15px 0;
+        margin-bottom: 25px;
+    }
+
+    .img-box img {
+        width: 150px;
+        height: 180px;
+    }
+
+    ..text-box {
+        height: 150px;
+        margin-bottom: 70px;
+        overflow: hidden;
+        padding: 5px;
+        text-align: justify;
+    }
+    .content-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        top: 40%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .description-box {
+        height: 7.2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2em;
+        text-align: justify;
+    }
+    .remove-wishlist-item {
+        position: relative;
+        top: 38%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="title-news">Sản phẩm yêu thích</h1>
+        </div>
+    </div>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="row row-item-new">
+                <div class="col-md-2">
+                    <div class="img-box">
+                        <a href="" title="@item.Product.Title="><img src="@item.Product.Image" alt="@item.Product.Title" /></a>
+                    </div>
+                </div>
+                <div class="col-md-8 text-box">
+                    <div class="content-box">
+                        <h4><a href="/chi-tiet/@item.Product.Alias-p@(item.Product.Id)" title="@item.Product.Title">@item.Product.Title</a></h4>
+                       @* <div class="description-box">
+                            @item.Product.Description
+                        </div>*@
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" data-id="@item.Id"  class="btn btn-danger remove-wishlist-item">Xóa</a>
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-6"></div>
+            <div class="col-6" style="text-align:right;">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    }
+
+</div>
+
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(".remove-wishlist-item").on("click", function (e) {
+                e.preventDefault();
+
+                var itemId = $(this).data("id");
+
+                $.ajax({
+                    url: '@Url.Action("RemoveFromWishlist", "Wishlist")',
+                    type: 'POST',
+                    data: { id: itemId },
+                    success: function (result) {
+                        if (result.Success) {
+                            alert(result.Message);
+                            location.reload();
+                        } else {
+                            alert(result.Message);
+                        }
+                    },
+                    error: function () {
+                        alert("Có lỗi xảy ra khi thực hiện yêu cầu xóa.");
+                    }
+                });
+            });
+        });
+    </script>
+}

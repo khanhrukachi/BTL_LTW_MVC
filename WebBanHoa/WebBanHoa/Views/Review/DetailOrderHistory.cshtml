@@ -1,0 +1,117 @@
+﻿@model WebBanHoa.Models.EF.Order
+@{
+    ViewBag.Title = "DetailOrderHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .payment-status-waiting {
+        color: orange;
+    }
+
+    .payment-status-paid {
+        color: green;
+    }
+
+    .status {
+        text-align: center;
+        padding: 10px;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    .not-paid {
+        color: white;
+        background-color: red;
+    }
+
+    .paid {
+        color: white;
+        background-color: green;
+    }
+</style>
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Default box -->
+            <div class="card" style="margin-top:180px">
+                <div class="card-header">
+                    <h3 class="card-title">Chi tiết đơn hàng</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Mã đơn hàng</label>
+                                <p class="form-control text-dark">@Model.Code</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Họ tên khách</label>
+                                <p class="form-control text-dark">@Model.CustomerName</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tổng tiền</label>
+                                <p class="form-control text-dark">@WebBanHoa.Common.Common.FormatNumber(Model.TotalAmount, 0) đ</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Số điện thoại</label>
+                                <p class="form-control text-dark">@Model.Phone</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ngày tạo</label>
+                                <p class="form-control text-dark">@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <p class="form-control text-dark">@Model.Email</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Địa chỉ</label>
+                                <p class="form-control text-dark">@Model.Address</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="form-control status @(Model.TypePayment == 1 ? "not-paid" : "paid")">
+                                @(Model.TypePayment == 1 ? "Chưa thanh toán" : "Đã thanh toán")
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>Danh sách sản phẩm</h3>
+                        </div>
+                        <div class="col-12">
+                            @Html.Action("Partial_SanPham", "Review", new { id = Model.Id })
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+
+                </div>
+                <!-- /.card-footer-->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
+</div>
+

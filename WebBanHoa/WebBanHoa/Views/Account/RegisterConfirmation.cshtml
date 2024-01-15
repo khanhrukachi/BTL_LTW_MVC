@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "Register Confirmation";
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/Content/assets/styles/main_styles.css">
+<div class="container news_section_container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 style="margin-top:180px">Registration successful.</h2>
+            <div class="text-center">
+                <p>
+                    To complete the registration process, please check your email for a confirmation link.
+                </p>
+                @Html.ActionLink("Resend Confirmation Email", "SendEmailConfirmation", "Account", new { userId = Model.Id }, new { })
+            </div>
+        </div>
+    </div>
+</div>

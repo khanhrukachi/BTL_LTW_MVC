@@ -1,0 +1,41 @@
+﻿@model WebBanHoa.Models.EF.Subscribe
+
+<div class="newsletter">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="newsletter_text d-flex flex-column justify-content-center align-items-lg-start align-items-md-center text-center">
+                    <h4>Bản tin</h4>
+                    <p>Đăng ký nhận bản tin để nhận được tin tức mới nhất từ chúng tôi!</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                @using (Ajax.BeginForm("Subscribe", "Home", new AjaxOptions
+                {
+                    OnBegin = "OnBeginSub",
+                    OnSuccess = "OnSuccessSub",
+                    OnFailure = "OnFailureSub"
+                }))
+                {
+                    @Html.AntiForgeryToken()
+                    <script>
+                        function OnBeginSub() {
+
+                        }
+                        function OnSuccessSub (rs) {
+                            if (rs.Success) {
+                                alert("Cảm ơn bạn đã đăng kí nhận thông tin từ chúng tôi!");
+                            }
+                        }
+                        function OnFailureSub(rs) {}
+                    </script>
+                    <div class="newsletter_form d-flex flex-md-row flex-column flex-xs-column align-items-center justify-content-lg-end justify-content-center">
+                        <input id="newsletter_email" name="Email" type="email" placeholder="sample@gmail.com" required="required" data-error="Valid email is required.">
+                        <button id="newsletter_submit" type="submit" class="newsletter_submit_btn trans_300" value="Submit">Đăng kí</button>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

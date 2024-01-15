@@ -1,0 +1,101 @@
+﻿@model IEnumerable<WebBanHoa.Models.EF.Order>
+
+<style>
+    .card-history {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .card-header-history {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    .card-title-history {
+        margin: 0;
+    }
+
+    .card-body-history {
+        padding: 20px;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border: 1px solid #ddd;
+    }
+
+    .table-bordered th {
+        background-color: #f8f9fa;
+    }
+
+    .pagination-container {
+        padding-top: 10px;
+    }
+
+    .table-bordered tbody tr {
+        margin-bottom: 10px;
+    }
+
+
+    .payment-status-waiting {
+        color: orange;
+    }
+
+    .payment-status-paid {
+        color: green;
+    }
+</style>
+
+@if (Model != null)
+{
+    <!-- Default box -->
+    <div class="card-history">
+        <div class="card-header-history">
+            <h3 class="card-title-history">Lịch sử mua hàng</h3>
+        </div>
+        <div class="card-body-history">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Tên Khách hàng</th>
+                        <th>Phone</th>
+                        <th>Tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        var i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td><a href="/review/detailorderhistory/@item.Id">@item.Code</a></td>
+                                <td>@item.CustomerName</td>
+                                <td>@item.Phone</td>
+                                <td>@WebBanHoa.Common.Common.FormatNumber(item.TotalAmount, 0)</td>
+                                <td style="color: @(item.TypePayment == 1 ? "orange" : "green")">
+                                    @(item.TypePayment == 1 ? "Chờ thanh toán" : "Đã thanh toán")
+                                </td>
+                                <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body-history -->
+        <div class="card-footer">
+
+        </div>
+        <!-- /.card-footer-histtory-->
+    </div>
+    <!-- /.card-history -->
+}

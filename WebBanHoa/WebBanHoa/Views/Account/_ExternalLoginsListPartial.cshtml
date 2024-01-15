@@ -1,0 +1,30 @@
+﻿@model WebBanHoa.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+
+<h4>
+    Sử dụng dịch vụ khác để đăng nhập.
+</h4>
+<hr />
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() == 0) {
+        <div>
+            <p>
+                Không có dịch vụ xác thực bên ngoài nào được định cấu hình. Nhìn thấy <a href="https://go.microsoft.com/fwlink/?LinkId=403804">bài viết này</a>
+                để biết chi tiết về cách thiết lập ứng dụng ASP.NET này để hỗ trợ đăng nhập qua các dịch vụ bên ngoài.
+            </p>
+        </div>
+    }
+    else {
+        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                <p>
+                    @foreach (AuthenticationDescription p in loginProviders) {
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                    }
+                </p>
+            </div>
+        }
+    }
+}
